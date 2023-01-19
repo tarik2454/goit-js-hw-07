@@ -34,62 +34,40 @@ function onCardsClick(event) {
     return;
   }
 
+  const parentGalleryCard = event.target.closest('.gallery__item');
+
+  removeActiveCardClass();
+  addActiveCardClass(parentGalleryCard);
+
+  const selectedImage = event.target.getAttribute('data-source');
+  addOriginalImgToModal(selectedImage);
+
+  window.addEventListener(
+    'keydown',
+    event => {
+      if (event.code === 'Escape') {
+        instance.close();
+      }
+    },
+    { once: true }
+  );
+}
+
+function addOriginalImgToModal(originalImageLink) {
+  const instance = basicLightbox.create(`
+      <img src="${originalImageLink}" width="800" height="600">
+  `);
+
+  instance.show();
+}
+
+function removeActiveCardClass() {
   const currentActiveCard = document.querySelector('.gallery__item.is-active');
   if (currentActiveCard) {
     currentActiveCard.classList.remove('is-active');
   }
-
-  const parentGalleryCard = event.target.closest('.gallery__item');
-  parentGalleryCard.classList.add('is-active');
-
-  const selectedImage = event.target.getAttribute('data-source');
-  const instance = basicLightbox.create(`
-      <img src="${selectedImage}" width="800" height="600">
-  `);
-
-  instance.show();
-
-  window.addEventListener('keydown', event => {
-    if (event.code === 'Escape') {
-      instance.close();
-    }
-  });
 }
 
-//* ---- OnCardsClick() function optimization option
-// function onCardsClick(event) {
-//   event.preventDefault();
-
-//   if (event.target.nodeName !== 'IMG') {
-//     return;
-//   }
-
-//   const parentGalleryCard = event.target.closest('.gallery__item');
-
-//   removeActiveCardClass();
-//   addActiveCardClass(parentGalleryCard);
-
-//   const selectedImage = event.target.getAttribute('data-source');
-//   const instance = basicLightbox.create(`
-//       <img src="${selectedImage}" width="800" height="600">
-//   `);
-
-//   instance.show();
-
-//   window.addEventListener('keydown', event => {
-//     if (event.code === 'Escape') {
-//       instance.close();
-//     }
-//   });
-// }
-
-// function removeActiveCardClass() {
-//   const currentActiveCard = document.querySelector('.gallery__item.is-active');
-//   if (currentActiveCard) {
-//     currentActiveCard.classList.remove('is-active');
-//   }
-// }
-
-// function addActiveCardClass(card) {
-//   card.classList.add('is-active');
-// }
+function addActiveCardClass(card) {
+  card.classList.add('is-active');
+}
