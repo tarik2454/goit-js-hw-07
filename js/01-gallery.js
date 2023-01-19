@@ -41,16 +41,6 @@ function onCardsClick(event) {
 
   const selectedImage = event.target.getAttribute('data-source');
   addOriginalImgToModal(selectedImage);
-
-  window.addEventListener(
-    'keydown',
-    event => {
-      if (event.code === 'Escape') {
-        instance.close();
-      }
-    },
-    { once: true }
-  );
 }
 
 function addOriginalImgToModal(originalImageLink) {
@@ -59,6 +49,16 @@ function addOriginalImgToModal(originalImageLink) {
   `);
 
   instance.show();
+
+  closeModalByEsc(instance);
+}
+
+function closeModalByEsc(instance) {
+  window.addEventListener('keydown', event => {
+    if (event.code === 'Escape') {
+      instance.close();
+    }
+  });
 }
 
 function removeActiveCardClass() {
